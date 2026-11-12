@@ -1,0 +1,16 @@
+{
+  "name": "shiksha-public-school-platform",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Shiksha Public School, Beawar – school website, ERP portals, LMS, fees and transport tracking (client demo)",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently -n api,web -c blue,yellow \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:web": "npm run dev --prefix frontend",
+    "dev:api": "npm run dev --prefix backend",
+    "build": "npm run build --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "9.1.0"
+  }
+}

@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-ivory text-navy-900 font-sans antialiased; }
+  h1, h2, h3, .font-display { @apply font-serif tracking-tight; }
+  .font-serif { font-variant-numeric: lining-nums; }
+  ::selection { @apply bg-gold-200 text-navy-900; }
+  :focus-visible { @apply outline-none ring-2 ring-gold-400 ring-offset-2 ring-offset-white; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60 whitespace-nowrap; }
+  .btn-primary { @apply btn bg-navy-900 text-white hover:bg-navy-700 shadow-sm; }
+  .btn-gold { @apply btn bg-gold-500 text-navy-950 hover:bg-gold-400 shadow-sm; }
+  .btn-outline { @apply btn border border-navy-200 bg-white text-navy-800 hover:border-navy-400 hover:bg-navy-50; }
+  .btn-ghost { @apply btn text-navy-700 hover:bg-navy-50; }
+  .btn-danger { @apply btn bg-red-600 text-white hover:bg-red-700; }
+  .btn-sm { @apply px-3 py-1.5 text-xs rounded-md; }
+  .card { @apply rounded-2xl border border-navy-100/70 bg-white shadow-soft; }
+  .input { @apply w-full rounded-lg border border-navy-200 bg-white px-3.5 py-2.5 text-sm text-navy-900 placeholder:text-navy-300 transition focus:border-navy-500 focus:outline-none focus:ring-2 focus:ring-navy-100; }
+  .input-error { @apply border-red-400 focus:border-red-500 focus:ring-red-100; }
+  .label { @apply mb-1.5 block text-xs font-semibold uppercase tracking-wide text-navy-500; }
+  .eyebrow { @apply text-xs font-semibold uppercase tracking-[0.2em] text-gold-600; }
+  .section { @apply py-16 sm:py-20 lg:py-24; }
+  .table-base { @apply w-full text-left text-sm; }
+  .table-base th { @apply bg-mist px-4 py-3 text-xs font-semibold uppercase tracking-wide text-navy-500 whitespace-nowrap; }
+  .table-base td { @apply border-t border-navy-50 px-4 py-3 align-middle text-navy-800; }
+  .table-base tbody tr { @apply transition hover:bg-ivory; }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: #B3C2DC; border-radius: 999px; }
+  .text-balance { text-wrap: balance; }
+}
+
+.leaflet-container { font-family: Inter, sans-serif; }
