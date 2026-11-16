@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  ArrowRight, Award, BookOpenCheck, CalendarDays, Clock, Compass, HeartHandshake, LogIn, Mail, MapPin, Megaphone, Phone,
+  ArrowRight, Award, BookOpenCheck, CalendarDays, Clock, Compass, HeartHandshake, Mail, MapPin, Megaphone, Phone,
   Quote, Sparkles, Trophy, Users, Wallet, PlayCircle, Medal, Star, Lightbulb,
 } from 'lucide-react';
 import { useCollection } from '@/hooks/useCollection';
@@ -64,10 +64,6 @@ export default function Home() {
           <motion.div {...fade} transition={{ duration: 0.6, delay: 0.3 }} className="mt-9 flex flex-wrap gap-3">
             <Link to="/admissions#enquiry" className="btn-gold px-6 py-3 text-base">Apply for Admission <ArrowRight className="h-4 w-4" /></Link>
             <Link to="/gallery" className="btn border border-white/30 px-6 py-3 text-base text-white hover:bg-white/10">Explore Our Campus</Link>
-          </motion.div>
-          <motion.div {...fade} transition={{ duration: 0.6, delay: 0.4 }} className="mt-6 flex flex-wrap gap-5 text-sm">
-            <Link to="/login?role=parent" className="flex items-center gap-2 text-navy-100 hover:text-white"><LogIn className="h-4 w-4 text-gold-300" />Parent Login</Link>
-            <Link to="/fees" className="flex items-center gap-2 text-navy-100 hover:text-white"><Wallet className="h-4 w-4 text-gold-300" />Pay Fees Online</Link>
           </motion.div>
         </div>
       </section>

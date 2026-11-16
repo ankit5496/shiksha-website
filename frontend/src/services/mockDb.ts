@@ -5,7 +5,8 @@ import type { CollectionMap, CollectionName } from '@/types';
  * In-browser demo database persisted to localStorage.
  * Acts as a drop-in stand-in for the REST API so the demo works without a backend.
  */
-const KEY = 'sps-demo-db-v1';
+// bump the version whenever seed relationships change so browsers pick up the new demo data
+const KEY = 'sps-demo-db-v2';
 type DB = { [K in CollectionName]: CollectionMap[K][] };
 
 let db: DB | null = null;

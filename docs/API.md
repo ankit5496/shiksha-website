@@ -66,8 +66,11 @@ Authenticated requests send `Authorization: Bearer <token>`. Errors return `{ "m
 
 | Method | Path | Auth | Body | Response |
 |---|---|---|---|---|
-| GET | `/transport/live` | any (parents: only their child's bus) | – | `{ updatedAt, buses: [{ bus, location: { busId, lat, lng, speed, heading, updatedAt, source: "gps"\|"simulated" } }] }` |
+| GET | `/parent/bus-tracking` | parent only | query `studentId?`, `busId?` (narrow only) | `{ updatedAt, simulated, children: [{ studentId, name, classId, section, stopId, busId\|null }], buses: [{ bus, route, driver: { id, name, phone, photo, experienceYears }, location, studentIds }] }` – `403` if `studentId`/`busId` is not one of the parent's own |
+| GET | `/transport/live` | any (parents/students: only their assigned bus) | – | `{ updatedAt, buses: [{ bus, location: { busId, lat, lng, speed, heading, updatedAt, source: "gps"\|"simulated" } }] }` |
 | POST | `/transport/location` | header `x-device-key: <GPS_DEVICE_KEY>` | `{ busId, lat, lng, speed?, heading? }` | `202` latest fix |
+
+**Bus access rule.** Parent → Student (`users.studentIds`, read from the database on every request, not from the token) → bus assignment (`students.busRouteId` + `stopId`) → Bus (`buses.routeId`) → Route → Driver. The same rule scopes the generic `/buses`, `/routes` and `/drivers` endpoints for parents and students: lists contain only their assigned records, and `GET /buses/:id` (etc.) for any other record returns `403`. A child with no `busRouteId` has `busId: null` — the fleet is never returned as a fallback. Staff roles are unrestricted.
 
 ## Examples
 

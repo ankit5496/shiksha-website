@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Clock, Facebook, Instagram, Mail, MapPin, Menu, Phone, Wallet, X, Youtube, LogIn } from 'lucide-react';
+import { Facebook, Instagram, Mail, MapPin, Menu, Phone, Wallet, X, Youtube, LogIn } from 'lucide-react';
 import clsx from 'clsx';
 import { school, DEMO_NOTICE } from '@/data/school';
 import { Logo } from './Logo';
@@ -14,25 +14,6 @@ export const PUBLIC_NAV = [
   { to: '/gallery', label: 'Gallery' },
   { to: '/contact', label: 'Contact' },
 ];
-
-export function TopBar() {
-  return (
-    <div className="hidden bg-navy-950 text-[13px] text-navy-200 md:block">
-      <div className="container flex h-10 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <span className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 text-gold-400" />{school.town}, {school.state}</span>
-          <a href={`tel:${school.phone}`} className="flex items-center gap-1.5 hover:text-white"><Phone className="h-3.5 w-3.5 text-gold-400" />{school.phoneDisplay}</a>
-          <a href={`mailto:${school.email}`} className="flex items-center gap-1.5 hover:text-white"><Mail className="h-3.5 w-3.5 text-gold-400" />{school.email}</a>
-        </div>
-        <div className="flex items-center gap-5">
-          <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 text-gold-400" />Mon – Sat</span>
-          <Link to="/login?role=parent" className="hover:text-white">Parent Login</Link>
-          <Link to="/login" className="hover:text-white">Staff Login</Link>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -58,9 +39,10 @@ export function Navbar() {
           ))}
         </nav>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link to="/fees" className="btn-ghost"><Wallet className="h-4 w-4" />Pay Fees</Link>
-          <Link to="/login?role=parent" className="btn-outline"><LogIn className="h-4 w-4" />Parent Login</Link>
-          <Link to="/admissions#enquiry" className="btn-gold">Apply for Admission</Link>
+          {/* transparent borders keep all three buttons the same height as the bordered Staff Login */}
+          <Link to="/fees" className="btn-ghost border border-transparent"><Wallet className="h-4 w-4" />Pay Fees</Link>
+          <Link to="/login?role=office" className="btn-outline"><LogIn className="h-4 w-4" />Staff Login</Link>
+          <Link to="/admissions#enquiry" className="btn-gold border border-transparent">Apply for Admission</Link>
         </div>
         <button className="rounded-lg p-2 text-navy-800 lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu"><Menu className="h-6 w-6" /></button>
       </div>
@@ -83,10 +65,9 @@ export function Navbar() {
               <div className="grid gap-2 border-t border-navy-50 p-4">
                 <Link to="/admissions#enquiry" className="btn-gold">Apply for Admission</Link>
                 <div className="grid grid-cols-2 gap-2">
-                  <Link to="/login?role=parent" className="btn-outline">Parent Login</Link>
-                  <Link to="/fees" className="btn-outline">Pay Fees</Link>
+                  <Link to="/fees" className="btn-outline"><Wallet className="h-4 w-4" />Pay Fees</Link>
+                  <Link to="/login?role=office" className="btn-outline"><LogIn className="h-4 w-4" />Staff Login</Link>
                 </div>
-                <Link to="/login" className="btn-ghost">Staff / Student Login</Link>
               </div>
             </motion.aside>
           </div>

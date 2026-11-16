@@ -1,6 +1,7 @@
-import { asyncHandler, badRequest, notFound } from '../utils/httpError.js';
+import { asyncHandler, badRequest, forbidden, notFound } from '../utils/httpError.js';
 import { repo } from '../services/repository.js';
-import { assertWritable, inScope, scopeFilter } from '../middleware/scope.js';
+import { transportAccess } from '../services/transportService.js';
+import { assertWritable, inScope, linkedStudentIds, scopeFilter } from '../middleware/scope.js';
 
 /** Fields clients may never set directly. */
 const sanitize = (body = {}) => {
@@ -23,13 +24,28 @@ function applyCreateDefaults(collection, user, data) {
   return data;
 }
 
+/**
+ * Transport records are not student-owned rows, so they are scoped through the student's bus assignment:
+ * parents/students only ever see the bus, route and driver serving their own child / themselves.
+ * Returns the allowed id set, or null when the user is unrestricted (staff).
+ */
+const TRANSPORT_KEYS = { buses: 'busIds', routes: 'routeIds', drivers: 'driverIds' };
+async function transportScope(user, collection) {
+  if (!user || !TRANSPORT_KEYS[collection]) return null;
+  const ids = await linkedStudentIds(user);
+  if (!ids) return null;
+  return (await transportAccess(ids))[TRANSPORT_KEYS[collection]];
+}
+
 /** GET /api/:collection  (query-string equality filters supported, e.g. ?classId=c8&section=A) */
 export const list = asyncHandler(async (req, res) => {
   const { collection } = req.params;
   const query = Object.fromEntries(Object.entries(req.query).filter(([, v]) => typeof v === 'string'));
   const scope = req.user ? scopeFilter(req.user, collection) : {};
   // scope keys win over client-supplied filters
-  const rows = await repo(collection).list({ ...query, ...scope });
+  let rows = await repo(collection).list({ ...query, ...scope });
+  const allowed = await transportScope(req.user, collection);
+  if (allowed) rows = rows.filter((r) => allowed.has(r.id));
   res.json(rows);
 });
 
@@ -38,6 +54,8 @@ export const getOne = asyncHandler(async (req, res) => {
   const { collection, id } = req.params;
   const row = await repo(collection).get(id);
   if (!row || (req.user && !inScope(req.user, collection, row))) throw notFound();
+  const allowed = await transportScope(req.user, collection);
+  if (allowed && !allowed.has(row.id)) throw forbidden('This transport record is not assigned to your child.');
   res.json(row);
 });
 

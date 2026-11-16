@@ -1,20 +1,41 @@
 import crypto from 'node:crypto';
-import { asyncHandler, badRequest, unauthorized } from '../utils/httpError.js';
+import { asyncHandler, badRequest, forbidden, unauthorized } from '../utils/httpError.js';
 import { env } from '../config/env.js';
 import { repo } from '../services/repository.js';
-import { ingestLocation, liveLocations } from '../services/transportService.js';
-import { allowedStudentIds } from '../middleware/scope.js';
+import { busTrackingFor, ingestLocation, liveLocations, transportAccess } from '../services/transportService.js';
+import { linkedStudentIds } from '../middleware/scope.js';
 
-/** GET /api/transport/live – latest position of every bus (parents only see their child's bus). */
+/** GET /api/transport/live – latest position of every bus (parents/students only see their assigned bus). */
 export const live = asyncHandler(async (req, res) => {
   let rows = await liveLocations();
-  const ids = allowedStudentIds(req.user);
+  const ids = await linkedStudentIds(req.user);
   if (ids) {
-    const students = await repo('students').list({ id: ids });
-    const routeIds = new Set(students.map((s) => s.busRouteId).filter(Boolean));
-    rows = rows.filter((r) => routeIds.has(r.bus.routeId));
+    const { busIds } = await transportAccess(ids);
+    rows = rows.filter((r) => busIds.has(r.bus.id));
   }
   res.json({ updatedAt: new Date().toISOString(), buses: rows });
+});
+
+/**
+ * GET /api/parent/bus-tracking[?studentId=…][&busId=…]
+ * The parent is identified from the JWT and their children are read from the database – ids sent by
+ * the client only narrow the result, they never grant access. Asking for another family's student or
+ * bus returns 403.
+ */
+export const parentBusTracking = asyncHandler(async (req, res) => {
+  const childIds = await linkedStudentIds(req.user);
+  const { studentId, busId } = req.query;
+  if (studentId !== undefined && (typeof studentId !== 'string' || !childIds.includes(studentId))) {
+    throw forbidden('You can only track the school bus of your own child.');
+  }
+  const data = await busTrackingFor(studentId ? [studentId] : childIds);
+  if (busId !== undefined) {
+    if (typeof busId !== 'string' || !data.buses.some((b) => b.bus.id === busId)) {
+      throw forbidden('This bus is not assigned to your child.');
+    }
+    data.buses = data.buses.filter((b) => b.bus.id === busId);
+  }
+  res.json(data);
 });
 
 /**

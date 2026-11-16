@@ -1,5 +1,6 @@
 import { PERMISSIONS, STUDENT_OWNED } from '../config/permissions.js';
 import { forbidden } from '../utils/httpError.js';
+import { repo } from '../services/repository.js';
 
 /** Student ids the current user may see (null = unrestricted). */
 export function allowedStudentIds(user) {
@@ -7,6 +8,16 @@ export function allowedStudentIds(user) {
   if (user.role === 'parent') return user.studentIds || [];
   if (user.role === 'student') return user.studentId ? [user.studentId] : [];
   return null;
+}
+
+/**
+ * Like allowedStudentIds, but reads the parent ↔ child links from the database rather than the token,
+ * so a link removed by the office takes effect immediately (not only after the parent signs in again).
+ */
+export async function linkedStudentIds(user) {
+  if (user?.role !== 'parent') return allowedStudentIds(user);
+  const account = await repo('users').get(user.id);
+  return account?.studentIds || [];
 }
 
 /** Equality filter applied to list queries for the current user. */

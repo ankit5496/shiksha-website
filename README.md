@@ -90,7 +90,7 @@ All demo accounts use the password **`Demo@123`**.
 |---|---|---|
 | Admin | `admin@schooldemo.com` | `/admin` |
 | Office Staff | `office@schooldemo.com` | `/office` |
-| Parent (2 children: Aarav – Class 8 A, Ananya – Class 4 A) | `parent@schooldemo.com` | `/parent` (Fees Portal at `/fees`) |
+| Parent (2 children: Aarav – Class 8 A, Bus 01; Ananya – Class 4 A, Bus 02) | `parent@schooldemo.com` | `/parent` (Fees Portal at `/fees`) |
 | Teacher (Neha Mathur – Science) | `teacher@schooldemo.com` | `/teacher` |
 | Student (Aarav Sharma – Class 8 A) | `student@schooldemo.com` | `/student` |
 
@@ -118,7 +118,7 @@ web-template/
 │   ├── scripts/export-seed.ts   # writes backend/data/seed.json
 │   └── src/
 │       ├── components/ui/       # Button, Form (Input/Select/SearchSelect), Modal, DataTable, Badge, StatCard…
-│       ├── components/site/     # Logo, TopBar, Navbar, Footer, PageHero, SectionHeading
+│       ├── components/site/     # Logo, Navbar, Footer, PageHero, SectionHeading
 │       ├── layouts/             # PublicLayout, DashboardLayout (sidebar, topbar, notifications, profile menu)
 │       ├── pages/public/        # Home, About, Academics, Admissions, Gallery, Contact, Login, NotFound
 │       ├── modules/

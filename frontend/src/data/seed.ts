@@ -145,7 +145,7 @@ function buildStudents(r: () => number): Student[] {
   const pick = <T,>(a: T[]) => a[Math.floor(r() * a.length)];
   const out: Student[] = [
     { id: 's1', admissionNo: 'SPS/2019/0142', name: 'Aarav Sharma', gender: 'Male', dob: '2013-05-14', classId: 'c8', section: 'A', rollNo: 1, fatherName: 'Rajesh Sharma', motherName: 'Sunita Sharma', phone: '+91 90000 30001', email: 'parent@schooldemo.com', address: 'Near Mewari Gate, Beawar (demo address)', bloodGroup: 'B+', admissionDate: '2019-04-08', status: 'Active', busRouteId: 'r1', stopId: 'r1-s3' },
-    { id: 's2', admissionNo: 'SPS/2023/0388', name: 'Ananya Sharma', gender: 'Female', dob: '2017-09-02', classId: 'c4', section: 'A', rollNo: 1, fatherName: 'Rajesh Sharma', motherName: 'Sunita Sharma', phone: '+91 90000 30001', email: 'parent@schooldemo.com', address: 'Near Mewari Gate, Beawar (demo address)', bloodGroup: 'O+', admissionDate: '2023-04-05', status: 'Active', busRouteId: 'r1', stopId: 'r1-s3' },
+    { id: 's2', admissionNo: 'SPS/2023/0388', name: 'Ananya Sharma', gender: 'Female', dob: '2017-09-02', classId: 'c4', section: 'A', rollNo: 1, fatherName: 'Rajesh Sharma', motherName: 'Sunita Sharma', phone: '+91 90000 30001', email: 'parent@schooldemo.com', address: 'Near Mewari Gate, Beawar (demo address)', bloodGroup: 'O+', admissionDate: '2023-04-05', status: 'Active', busRouteId: 'r2', stopId: 'r2-s3' },
   ];
   const plan: [string, string, number][] = [['c8', 'A', 11], ['c8', 'B', 8], ['c4', 'A', 7], ['c4', 'B', 4], ['c7', 'A', 4], ['c10', 'A', 4], ['c6', 'A', 3], ['ukg', 'A', 3], ['c1', 'A', 3], ['c9', 'A', 3]];
   let n = 3;
